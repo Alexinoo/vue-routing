@@ -1,28 +1,51 @@
+<!-- NAVIGATING WITH router-link
+=========================
+
+- Instead we will now navigate differently;
+
+-We will not use the button anymore but use another built-in component that comes with the vue-router
+
+-<router-link></router-link> is a little bit similar to the <a></a> tag HTM element but is a special anchor tag which will not load the entire page or reload the entire app.
+
+-You can still pass any Text or any HTML element because router link internally uses slots
+    e.g. <router-link>Teams</router-link>
+    OR  <router-link><h2></h2></router-link>
+
+-And now we need to configure router link with the to="" prop which it expects
+
+-The to="" props takes various diff values and the simplest way to use is to provide a path which you wanna go to
+  e.g <router-link to="/teams">Teams</router-link>
+
+-'/teams' has to be one of the routes you are supporting in your createRouter configuration
+
+-replace button styles with a because router-link under the hood will render an achor tag
+
+-And this works..
+
+-If you inspect some css classes are also added when you switch on btwn the routes and these are ; 
+    e.g. class="router-link-active router-link-exact-active"
+
+-And we only have them under the current link that we are currently on
+
+-These are added automatically by the router-link for the link that is currently active so that you can actually style these links based on the selection to give the user the feedback regarding the link which they are currently on
+ -->
+
+
 <template>
   <header>
     <nav>
       <ul>
         <li>
-          <button @click="setActivePage('teams-list')">Teams</button>
+          <router-link to="/teams">Teams</router-link>
         </li>
         <li>
-          <button @click="setActivePage('users-list')">Users</button>
+          <router-link to="/users">Users</router-link>
         </li>
       </ul>
     </nav>
   </header>
 </template>
 
-<script>
-export default {
-  emits: ['set-page'],
-  methods: {
-    setActivePage(page) {
-      this.$emit('set-page', page);
-    },
-  },
-};
-</script>
 
 <style scoped>
 header {
@@ -49,8 +72,8 @@ li {
   margin: 0 2rem;
 }
 
-button {
-  font: inherit;
+a {
+  text-decoration: none;
   background: transparent;
   border: 1px solid transparent;
   cursor: pointer;
@@ -59,8 +82,8 @@ button {
   display: inline-block;
 }
 
-button:hover,
-button:active {
+a:hover,
+a:active {
   color: #f1a80a;
   border-color: #f1a80a;
   background-color: #1a037e;
