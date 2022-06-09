@@ -1,20 +1,27 @@
+<!-- 
+
+-We use the router-view component which tells the router that this is the place where the selected routed to component should be loaded
+
+-Therefore we replace  <component :is="activePage"></component> with <router-view></router-view> special component
+
+-And therefore we can now remove TeamsList/UsersList which we had registered here because we have already registered them globally in the main.js and therefore no need to register them locally in App.vue
+
+-->
+
+
 <template>
   <the-navigation @set-page="setActivePage"></the-navigation>
   <main>
-    <component :is="activePage"></component>
+   <router-view></router-view>
   </main>
 </template>
 
 <script>
-import TeamsList from './components/teams/TeamsList.vue';
-import UsersList from './components/users/UsersList.vue';
 import TheNavigation from './components/nav/TheNavigation.vue';
 
 export default {
   components: {
     TheNavigation,
-    TeamsList,
-    UsersList,
   },
   data() {
     return {
