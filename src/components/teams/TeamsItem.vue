@@ -25,6 +25,29 @@
 
   <router-link to="teamMemberLink"></router-link>
 
+  NAMED ROUTES - ( continuation )
+====================================================
+
+-Now instead of   ( return '/teams/' + this.id ) we can retun an object with the name of the route we want to load.
+
+-This makes it clear that  teamMemberLink() will load team-members link
+
+Then we pass in the params since our TeamMembers expect teamId as an object
+
+e.g. 
+ 
+ return {
+        name : 'team-members' ,
+        params : {
+          teamId : this.id
+        }
+      }
+    }
+
+    -This would be as same as doing the following which works as well
+
+    this.$router.push({  name : 'team-members' , params : {teamId : this.id } })
+
  -->
 
 
@@ -33,7 +56,7 @@
   <li>
     <h3>{{ name }}</h3>
     <div class="team-members">{{ memberCount }} Members</div>
-    <router-link :to="'/teams/' +id">View Members</router-link>
+    <router-link :to="teamMemberLink">View Members</router-link>
   </li>
 </template>
 
@@ -41,13 +64,20 @@
 export default {
   props: ['id','name', 'memberCount'],
 
-  // computed: {
+  computed: {
 
-  //   teamMemberLink() {
-
-  //     return '/teams/' + this.id
-  //   }
-  // }
+    teamMemberLink() {
+    
+      return {
+        name : 'team-members' ,
+        params : {
+          teamId : this.id
+        }
+      }
+      // Would be same as:
+    //  return  this.$router.push({  name : 'team-members' , params : {teamId : this.id } })
+    }
+  }
 };
 </script>
 

@@ -164,6 +164,31 @@ USING NESTED ROUTES
 
 -so we can add <router-view></router-view> just above the <ul></ul>
 
+
+NAMED ROUTES
+====================================================
+-We can add name property to name that route
+
+-we can also add name property to the children routes as well and then use these names as leverage
+
+  { 
+    name : 'teams'
+    path : '/teams',
+    component: TeamsList , 
+    children : [
+
+            {  
+                name : 'teamMemebers
+                path: ':teamId',
+                component: TeamMembers,
+                props : true
+             },
+
+        ] 
+ },
+
+-continued in TeamsItem.vue
+
 */
 
 
@@ -186,11 +211,17 @@ const router = createRouter({
 
         { path : '/', redirect : '/teams' },
 
-        {  path : '/teams', component: TeamsList , children : [
 
-            {  path: ':teamId',component: TeamMembers,  props : true },
+        {  
+            name : 'teams',
+            path : '/teams',
+            component: TeamsList , 
+            children : [
 
-        ] },
+            { name : 'team-members', path: ':teamId',component: TeamMembers,  props : true },
+
+            ] 
+    },
 
         {  path : '/users', component: UsersList },
 
