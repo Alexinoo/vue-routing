@@ -56,6 +56,25 @@ PASSING DATA WITH ROUTE PARAMS DYNAMICALLY
 -The dynamic id can therefore be accessible from the Component that we want to be loaded by that url by using
     e.g. this.$route.params.teamId
 
+
+
+ PASSING PARAMS AS PROPS
+============================
+
+-We have another property that we can pass to our routes configure object
+
+-And that is props;
+
+-If we set it to true i.e. props : true , this means that the dynamic /:teamId will be passed to TeamMembers Component  
+
+  {
+            path: '/teams/:teamId',
+            component: TeamMembers,
+            props : true
+        },
+
+-continued in TeamMembers....
+
 */
 
 
@@ -82,7 +101,8 @@ const router = createRouter({
         },
         {
             path: '/teams/:teamId',
-            component: TeamMembers
+            component: TeamMembers,
+            props : true
         },
     ] ,
     linkActiveClass : 'active'
