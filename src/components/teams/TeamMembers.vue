@@ -1,3 +1,28 @@
+<!--
+PASSING DATA WITH ROUTE PARAMS DYNAMICALLY
+============================
+
+-We can therefore access the value of the route params and store it in a constant by the following syntax
+    e.g. const teamID =  this.$route.params.teamId
+
+-We inject ['teams','users'] which has been provided by App.vue and therefore now we have access to teams / users data
+
+-Thus we can find the id of the team that matches the route params from the teams []
+
+        const selectedTeam = this.teams.find(team => team.id === teamID);
+
+-If found , that means we have access to members property from the selectedTeam results which we can store in a constant variable
+
+        const members = selectedTeam.members
+
+-We can loop through the members[] and search/find from the users [] if the ID matches
+
+-We can define an empty array and push each member to this array if there is a user match
+
+-Then update members and teamName in the DOM
+
+ -->
+
 <template>
   <section>
     <h2>{{ teamName }}</h2>
@@ -16,18 +41,33 @@
 import UserItem from '../users/UserItem.vue';
 
 export default {
+  inject : ['teams','users'],
   components: {
     UserItem
   },
   data() {
     return {
-      teamName: 'Test',
-      members: [
-        { id: 'u1', fullName: 'Max Schwarz', role: 'Engineer' },
-        { id: 'u2', fullName: 'Max Schwarz', role: 'Engineer' },
-      ],
+        teamName : '',
+        members : []
     };
   },
+
+  created(){
+    const teamID = this.$route.params.teamId   // /teams/t1
+
+    const selectedTeam = this.teams.find(team => team.id === teamID);
+
+    const members = selectedTeam.members
+
+    const selectedMembers = []
+
+    for( const member of members ){
+      const selectedUser =  this.users.find(user => user.id === member)
+      selectedMembers.push(selectedUser)
+    }
+    this.members = selectedMembers
+    this.teamName = selectedTeam.name
+  }
 };
 </script>
 

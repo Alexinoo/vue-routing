@@ -46,6 +46,16 @@ REGISTERING & RENDERING THE ROUTES
 
 -continued ..at App.vue
 
+PASSING DATA WITH ROUTE PARAMS DYNAMICALLY
+============================
+
+-Use /:id to dynamically add a dynamic parameter
+
+-We register another route with /teams/:teamID and this will be used to filter that we wanna filter for the teamMember with teamID specified
+
+-The dynamic id can therefore be accessible from the Component that we want to be loaded by that url by using
+    e.g. this.$route.params.teamId
+
 */
 
 
@@ -57,6 +67,7 @@ import App from './App.vue';
 
 import TeamsList from './components/teams/TeamsList.vue';
 import UsersList from './components/users/UsersList.vue';
+import TeamMembers from './components/teams/TeamMembers.vue';
 
 const router = createRouter({
     history: createWebHistory() ,
@@ -68,6 +79,10 @@ const router = createRouter({
         {
             path : '/users',
             component: UsersList
+        },
+        {
+            path: '/teams/:teamId',
+            component: TeamMembers
         },
     ] ,
     linkActiveClass : 'active'
