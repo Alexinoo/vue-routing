@@ -1,4 +1,5 @@
-<!-- 
+<!-- Routing Setup
+===============================================================
 
 -We use the router-view component which tells the router that this is the place where the selected routed to component should be loaded
 
@@ -10,12 +11,24 @@
 
 -->
 
+<!-- Rendering Multiple Routes With Named Router Views
+===============================================================
+
+
+
+-->
+
 
 <template>
   <the-navigation ></the-navigation>
   <main>
    <router-view></router-view>
   </main>
+
+  <footer>
+    <router-view name="footer"></router-view>
+  </footer>
+
 </template>
 
 <script>
