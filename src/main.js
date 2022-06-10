@@ -254,6 +254,40 @@ Controlling Scroll Behavior
     
     -savedPosition :-Retuns the position that the user was currently in from a previous page
 
+===============================================================
+Introducing Navigation Guards - Works like a Middleware
+===============================================================
+
+-Navigation guards are used with features like Authentication to allow the user to access a certain route if he/she is not authenticated
+
+-Guards are functions/methods which are called automatically by Vue-router when a navigation action is started
+
+-we can call beforeEach( function( to , from , next  ){} ) which takes in a function as an argument 
+
+-This function is called by vue-router whenever we navigate from one page to the other
+
+-Takes 3 parameters :
+
+    1.) to - Route object of the page we are going to
+
+    2.) from - Route object of the page we are coming from
+
+    3. next() - Is a function which we have to call to either Confirm/Cancell this navigation action
+
+-At the moment we call next() like this ; ANd this means we allow the navigation/confirm navigation
+
+-You can pass false to next(false) - which cancels the navigation or true
+
+-You can also pass a string with url next('/users) which needs to be defined in the routes property in the createRouter({  }) configuration object
+    .e.g. next('/users')
+
+-Or a configuration object {}
+    .e.g. next({ name : 'team-members' , params : { teamId : 't2' } })
+
+-Is useful because it allows us to deny the user access to proceed further  if they are not authenticated
+
+
+
 */
 
 
@@ -285,7 +319,7 @@ const router = createRouter({
             components: {
 
                 default: TeamsList ,
-                footer: TeamsFooter
+                footer: TeamsFooter ,
             } , 
             children : [
 
@@ -296,11 +330,9 @@ const router = createRouter({
 
         {  
             path : '/users',
-            components: {
-                
+            components: {                
                 default : UsersList ,
-                footer : UsersFooter
-            
+                footer : UsersFooter            
             }       
         
         },
@@ -309,17 +341,34 @@ const router = createRouter({
     ] ,
     linkActiveClass : 'active' ,
 
-    scrollBehavior (to, from, savedPosition) {
-        console.log(to , from , savedPosition);
+    scrollBehavior (_, _2, savedPosition) {
+
+        // console.log(to , from , savedPosition);
         
         if(savedPosition){
             return savedPosition;
         }
         return {
             left : 0 ,
-            top : 0
+            top : 0 ,
         }
     }
+
+})
+
+
+
+router.beforeEach(function (to, from, next  ){
+
+    console.log('Global Before Each');
+    console.log( to , from );
+    // if( to.name === 'team-members' ){
+
+    //     next();
+    // }else{
+    //     next({ name: 'team-members', params: { teamId: 't2' } })
+    // }
+    next()
 
 })
 
