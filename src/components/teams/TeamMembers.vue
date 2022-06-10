@@ -23,6 +23,30 @@ PASSING DATA WITH ROUTE PARAMS DYNAMICALLY
 
  -->
 
+
+
+ <!-- UPDATING PARAMS DATA WITH WATCHERS - An intended behavior
+ =====================================================================
+ 
+ -Note we have added a <router-link to="/teams/t2"></router-link> that redirects us to somewhere when we are in a certain route - say /teams/t2;
+
+ -However , the route is changing but the data is not rendered for that specific component 
+
+ -This is because the vue-router does not destroy and recreate the component just because the url changed
+
+ -Therefore the code created does not run again when the url changed
+
+ -Hence if you are on a page that you want to load again but with diff data with diff parameter , by default the vue-router will do nothing 
+
+ -So how can we react to this change of url;
+
+ -Well we noted that this.$route.params will always hold the latest parameter 
+
+ -And therefore we can add a watcher that watches for changes in the this.$route.params 
+ 
+ 
+  -->
+
 <template>
   <section>
     <h2>{{ teamName }}</h2>
@@ -34,6 +58,9 @@ PASSING DATA WITH ROUTE PARAMS DYNAMICALLY
         :role="member.role"
       ></user-item>
     </ul>
+    
+  <router-link to="/teams/t2"> Go To Team 2</router-link>
+
   </section>
 </template>
 
@@ -52,30 +79,50 @@ export default {
     };
   },
 
+  methods : {
+
+     loadTeamMembers(route){
+
+          console.log(route);
+
+          const path = route.path
+
+          console.log(path); // '/teams/t1'
+
+          const teamID = route.params.teamId
+
+          console.log(teamID); // 't1'
+
+          const selectedTeam = this.teams.find(team => team.id === teamID);
+
+          if(!selectedTeam){
+            return;
+          }
+
+          const members = selectedTeam.members
+
+          const selectedMembers = []
+
+          for (const member of members) {
+            const selectedUser = this.users.find(user => user.id === member)
+            selectedMembers.push(selectedUser)
+          }
+          this.members = selectedMembers
+          this.teamName = selectedTeam.name
+        }
+  } ,
+
   created(){
 
-    console.log(this.$route);
+    this.loadTeamMembers(this.$route)
+ 
+  } ,
 
-    const path = this.$route.path   
-    
-    console.log(path); // '/teams/t1'
+  watch : {
+    $route(newRoute){
 
-    const teamID = this.$route.params.teamId 
-
-    console.log(teamID); // 't1'
-
-    const selectedTeam = this.teams.find(team => team.id === teamID);
-
-    const members = selectedTeam.members
-
-    const selectedMembers = []
-
-    for( const member of members ){
-      const selectedUser =  this.users.find(user => user.id === member)
-      selectedMembers.push(selectedUser)
+      this.loadTeamMembers(newRoute)
     }
-    this.members = selectedMembers
-    this.teamName = selectedTeam.name
   }
 };
 </script>
