@@ -43,8 +43,27 @@ PASSING DATA WITH ROUTE PARAMS DYNAMICALLY
  -Well we noted that this.$route.params will always hold the latest parameter 
 
  -And therefore we can add a watcher that watches for changes in the this.$route.params 
+
+
+  PASSING PARAMS AS PROPS
+============================
+
+-We receive ['teamId] as prop since prop was set to true in the main.js ; To be sent as a prop
  
+ -Then we can watch it if it changes by adding a watcher
+
+ -And call loadTeamMembers() and pass the latest teamId prop
  
+  watch : {
+
+       team(newId){
+
+        this.loadTeamMembers(newId)
+
+      }
+  }
+
+  -Therefore , making our component more re-usable 
   -->
 
 <template>
@@ -69,6 +88,9 @@ import UserItem from '../users/UserItem.vue';
 
 export default {
   inject : ['teams','users'],
+
+  props : ['teamId'] ,
+
   components: {
     UserItem
   },
@@ -81,19 +103,9 @@ export default {
 
   methods : {
 
-     loadTeamMembers(route){
+    loadTeamMembers(teamId){        
 
-          console.log(route);
-
-          const path = route.path
-
-          console.log(path); // '/teams/t1'
-
-          const teamID = route.params.teamId
-
-          console.log(teamID); // 't1'
-
-          const selectedTeam = this.teams.find(team => team.id === teamID);
+      const selectedTeam = this.teams.find(team => team.id === teamId);
 
           if(!selectedTeam){
             return;
@@ -114,14 +126,14 @@ export default {
 
   created(){
 
-    this.loadTeamMembers(this.$route)
+    this.loadTeamMembers(this.teamId)
  
   } ,
 
   watch : {
-    $route(newRoute){
+    teamId(newId){
 
-      this.loadTeamMembers(newRoute)
+      this.loadTeamMembers(newId)
     }
   }
 };
