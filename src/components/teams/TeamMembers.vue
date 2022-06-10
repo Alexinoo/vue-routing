@@ -54,6 +54,8 @@ export default {
 
   created(){
 
+    console.log(this.$route);
+
     const path = this.$route.path   
     
     console.log(path); // '/teams/t1'
