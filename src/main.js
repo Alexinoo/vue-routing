@@ -75,6 +75,58 @@ PASSING DATA WITH ROUTE PARAMS DYNAMICALLY
 
 -continued in TeamMembers....
 
+
+
+REDIRECTING & "Catch All " routes
+============================
+
+-We can define an object with a path that loads a component OR redirects to another Component when https://127.0.0.1:8080 is visited
+
+-There are several ways we can use to achieve that:
+
+1.) Add the component to be loaded in that path
+
+            e.g.     // { path : '/',   component: TeamsList }, 
+            -Loads TeamsList component but however the url does not change to reflect this
+
+   2.) Use redirect : property and point out which url we want to be redirected to
+
+            e.g.     // { path : '/', redirect : '/teams' }, 
+            -Works perfect and the url is updated
+
+   3.) Add alias: '/' property and specify that root page is also an alias of TeamsMember component
+
+            e.g.     {
+                path : '/teams',
+                component: TeamsList ,
+                alias : '/'
+            },
+            -However the url does not change to reflect this which is a different to a redirect
+
+Catch All - UnHandled Routes
+---------
+-Upto now we have not handled the case of a route not found ; i.e Users can still enter anything and get a blank page
+
+-So, we handle this by adding :notFound or :catchAll and then pass (.*) to it
+     e.g. { path : '/:notFound(.*)' }
+
+-This means any character combination should be handled by { path : '/:notFound(.*)' }
+
+-Must be added as the last path so that it does not overwite the rest of the paths
+
+-Then provide the Component that you want to be loaded; 
+
+    e.g.     { path : '/:notFound(.*)'  , component : TeamsMembers } ,
+
+-Or redirect to '/teams' for any invalid value entered
+
+    e.g.     { path : '/:notFound(.*)'  , redirect : '/teams' } ,
+
+-Alternatively , you can create a NotFound component which should be loaded if the url cannot be found
+
+    e.g.  { path: '/:notFound(.*)',  component : NotFound } ,
+
+
 */
 
 
@@ -87,25 +139,25 @@ import App from './App.vue';
 import TeamsList from './components/teams/TeamsList.vue';
 import UsersList from './components/users/UsersList.vue';
 import TeamMembers from './components/teams/TeamMembers.vue';
+import NotFound from './components/nav/NotFound.vue'
 
 const router = createRouter({
+
     history: createWebHistory() ,
+
     routes : [
-        {
-            path : '/teams',
-            component: TeamsList
-        },
-        {
-            path : '/users',
-            component: UsersList
-        },
-        {
-            path: '/teams/:teamId',
-            component: TeamMembers,
-            props : true
-        },
+
+        { path : '/', redirect : '/teams' },
+
+        {  path : '/teams', component: TeamsList },
+
+        {  path : '/users', component: UsersList },
+
+        {  path: '/teams/:teamId',component: TeamMembers,  props : true },
+
+        { path: '/:notFound(.*)',  component : NotFound } ,
     ] ,
-    linkActiveClass : 'active'
+    linkActiveClass : 'active' ,
 
 })
 
