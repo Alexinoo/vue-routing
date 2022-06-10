@@ -187,7 +187,48 @@ NAMED ROUTES
         ] 
  },
 
--continued in TeamsItem.vue
+-continued in TeamsItem.vue.....
+
+
+
+===============================================================
+Rendering Multiple Routes With Named Router Views
+===============================================================
+
+-In your route config , you can register more than one component for route;
+
+-instead of having component , we can have components which takes in an object
+
+    e.g. components : {
+         key : value
+    }
+
+-Where : -
+
+    -keys - identify different router views
+    
+    -values are the components that should be loaded into this router views
+
+-Only work if we give this <router-view></router-view> names just as you can give names to slots
+
+-You are allowed to have one unnamed which will be treated as default but also need to specify which component should be loaded as default
+    e.g. 
+         {  
+            name : 'teams',
+            path : '/teams',
+            components: {
+
+                default: TeamsList ,
+                footer: TeamsFooter
+            } , 
+            children : [
+
+            { name : 'team-members', path: ':teamId',component: TeamMembers,  props : true },
+
+            ] 
+    },
+
+-Also let's do the same for the users routes config
 
 */
 
@@ -199,7 +240,9 @@ import { createRouter  , createWebHistory} from 'vue-router';
 import App from './App.vue';
 
 import TeamsList from './components/teams/TeamsList.vue';
+import TeamsFooter from './components/teams/TeamsFooter.vue';
 import UsersList from './components/users/UsersList.vue';
+import UsersFooter from './components/users/UsersFooter.vue';
 import TeamMembers from './components/teams/TeamMembers.vue';
 import NotFound from './components/nav/NotFound.vue'
 
@@ -215,7 +258,11 @@ const router = createRouter({
         {  
             name : 'teams',
             path : '/teams',
-            component: TeamsList , 
+            components: {
+
+                default: TeamsList ,
+                footer: TeamsFooter
+            } , 
             children : [
 
             { name : 'team-members', path: ':teamId',component: TeamMembers,  props : true },
@@ -223,7 +270,17 @@ const router = createRouter({
             ] 
     },
 
-        {  path : '/users', component: UsersList },
+        {  
+            path : '/users',
+            components: {
+                
+                default : UsersList ,
+                footer : UsersFooter
+            
+            }
+        
+        
+        },
 
 
         { path: '/:notFound(.*)',  component : NotFound } ,
