@@ -48,6 +48,38 @@ e.g.
 
     this.$router.push({  name : 'team-members' , params : {teamId : this.id } })
 
+ USING QUERY PARAMS 
+====================================================
+
+-Query params - Optional route parameters which are not needed to find or load a component but may be used to add extra info in that cmpnt 
+
+-Added after ? mark 
+      e.g. ?sort=asc
+
+-You can either add this manually  by adding '?sort=asc'
+ 
+  e.g
+     return '/teams/' +this.id+ '?sort=asc'
+
+-But if we use the object form it's actually more convinient
+
+-We add   to our return object
+
+      query : {
+                sort : 'asc
+              }
+
+      return {
+              name : 'team-members' ,
+              params : { teamId : this.id },
+              query : {  sort : 'asc'   }
+            }
+          }
+
+-can be accessible from TeamMembers through   ( this.$route.query ) 
+
+     // console.log(this.$route.query);
+
  -->
 
 
@@ -70,9 +102,8 @@ export default {
     
       return {
         name : 'team-members' ,
-        params : {
-          teamId : this.id
-        }
+        params : {  teamId : this.id  } ,
+        query : { sort : 'asc' }
       }
       // Would be same as:
     //  return  this.$router.push({  name : 'team-members' , params : {teamId : this.id } })
