@@ -228,7 +228,31 @@ Rendering Multiple Routes With Named Router Views
             ] 
     },
 
--Also let's do the same for the users routes config
+-Also let's do the same for the users routes config {
+
+}
+
+
+===============================================================
+Controlling Scroll Behavior
+===============================================================
+
+-We can use a scrollBehavior() {} which we add to  our createRouter()
+
+-This methods takes 3 parameters:
+
+    - to :- Shows the content of (this.$route) that you are currently in
+    -from : - Shows the content of (this.$route) that you were coming from
+
+    -The following return means that content will always be displayed at the top without the users scrolling to top to see the contents of View Members
+
+    {
+        left : 0 ,
+        top : 0 ,
+    }
+
+    
+    -savedPosition :-Retuns the position that the user was currently in from a previous page
 
 */
 
@@ -277,15 +301,25 @@ const router = createRouter({
                 default : UsersList ,
                 footer : UsersFooter
             
-            }
-        
+            }       
         
         },
-
 
         { path: '/:notFound(.*)',  component : NotFound } ,
     ] ,
     linkActiveClass : 'active' ,
+
+    scrollBehavior (to, from, savedPosition) {
+        console.log(to , from , savedPosition);
+        
+        if(savedPosition){
+            return savedPosition;
+        }
+        return {
+            left : 0 ,
+            top : 0
+        }
+    }
 
 })
 
