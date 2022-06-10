@@ -14,7 +14,15 @@
 <!-- Rendering Multiple Routes With Named Router Views
 ===============================================================
 
+-If multiple <router-view></router-view> are used , then we need to name them and then leave one unnamed which will be treated as default;
 
+  <main>
+    <router-view></router-view>
+    </main>
+
+<footer>
+  <router-view name="footer"></router-view>
+  </footer>
 
 -->
 
