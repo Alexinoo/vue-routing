@@ -1,14 +1,53 @@
+<!--
+  NAVIGATION AND DYNAMIC PATHS
+  ============================
+
+  -Replace anchor tags with <router-link></router-link>
+
+  -Then bind :to="" property so that we can pass the id dynamically
+
+  -Expect id from the TeamsList which will be passed as a prop
+
+  OPTIONAL
+  -----------
+
+  -We can add a computed property
+
+  computed : {
+
+    teamMemberLink() {
+
+      return '/teams/' +this.id
+    }
+  }
+
+  -And then point to it in the to="teamMemberLink" inside <router-link></router-link>
+
+  <router-link to="teamMemberLink"></router-link>
+
+ -->
+
+
+
 <template>
   <li>
     <h3>{{ name }}</h3>
     <div class="team-members">{{ memberCount }} Members</div>
-    <a href="#">View Members</a>
+    <router-link :to="'/teams/' +id">View Members</router-link>
   </li>
 </template>
 
 <script>
 export default {
-  props: ['name', 'memberCount'],
+  props: ['id','name', 'memberCount'],
+
+  // computed: {
+
+  //   teamMemberLink() {
+
+  //     return '/teams/' + this.id
+  //   }
+  // }
 };
 </script>
 
