@@ -127,6 +127,43 @@ Catch All - UnHandled Routes
     e.g.  { path: '/:notFound(.*)',  component : NotFound } ,
 
 
+USING NESTED ROUTES
+============================
+
+-Suppose we want a scenario where when we click View Members , we don want to be redirected to another page but rather loads TeamsMembers above the list on the same page;
+
+-We can achieve this using Vue-router 
+
+-We have {  path: '/teams/:teamId',component: TeamMembers,  props : true }, which when we click takes us to another page you could say
+
+-Currently it's stand alone and we can use the component where this componet is called and add children property which takes in an []
+
+    e.g. {  path : '/teams', component: TeamsList , children : []
+
+-In the children's array , we specify the roues we want to be called inside the parent path
+
+ e.g. {  path : '/teams', component: TeamsList , children : [
+
+    {  path: '/teams/:teamId',component: TeamMembers,  props : true },
+] },
+
+-So inside our teams route we have a child route which is   {  path: '/teams/:teamId',component: TeamMembers,  props : true },
+
+-And in the children route ,we don't need to repeat path: '/teams/:teamId' , we can add :teamId and this will work too
+
+-And we can have more than one route inside children's array which will be reached as
+    /teams/t1
+    /teams/t2
+    /teams/t3
+
+-But once we save this, the vue-router still does not know where to render this anymore because the children path is not directly registered inside routes : [] but rather a child route of another route
+
+-Instead we need to add <router-view></router-view> in  the component where  {  path: '/teams/:teamId',component: TeamMembers,  props : true }, is defined as the child 
+
+-i.e In our case , that will be in the TeamsList component
+
+-so we can add <router-view></router-view> just above the <ul></ul>
+
 */
 
 
@@ -149,11 +186,14 @@ const router = createRouter({
 
         { path : '/', redirect : '/teams' },
 
-        {  path : '/teams', component: TeamsList },
+        {  path : '/teams', component: TeamsList , children : [
+
+            {  path: ':teamId',component: TeamMembers,  props : true },
+
+        ] },
 
         {  path : '/users', component: UsersList },
 
-        {  path: '/teams/:teamId',component: TeamMembers,  props : true },
 
         { path: '/:notFound(.*)',  component : NotFound } ,
     ] ,
