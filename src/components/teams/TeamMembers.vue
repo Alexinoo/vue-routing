@@ -132,6 +132,13 @@ export default {
  
   } ,
 
+  beforeRouteUpdate(to, from,next){
+    console.log('TeamMembers Component beforeRouteUpdate()');
+    console.log(to , from);
+    // this.loadTeamMembers( to.params.teamId )
+    next()
+  },
+
   watch : {
     teamId(newId){
 
