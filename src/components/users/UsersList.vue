@@ -15,6 +15,7 @@
 
 <template>
 <button @click="confirmInput"> Confirm</button>
+<button @click="saveChanges"> Save Changes</button>
   <ul>
     <user-item v-for="user in users" :key="user.id" :name="user.fullName" :role="user.role"></user-item>
   </ul>
@@ -24,8 +25,17 @@
 import UserItem from './UserItem.vue';
 
 export default {
+
+  inject: ['users'],
+
   components: {
     UserItem,
+  },
+
+  data(){
+    return {
+      changesSaved : false
+    }
   },
 
 methods : {
@@ -33,6 +43,10 @@ methods : {
     //do something..say navigate to teams page
 
     this.$router.push('/teams')
+  },
+
+  saveChanges(){
+    this.changesSaved = true
   }
 },
 
@@ -42,7 +56,23 @@ beforeRouteEnter(to,from,next){
   next()
 },
 
-  inject: ['users'],
+beforeRouteLeave(to,from,next){
+  console.log('UsersList Cmp beforeRouteLeave');
+  console.log(to ,from);
+
+  if (this.changesSaved){
+
+    next()
+  }else{
+    const userWantsToLeave = confirm('Are you sure  ? You got unsaved changes')
+    next(userWantsToLeave)
+  }
+},
+
+unmounted(){
+  console.log('unmounted');
+}
+
 };
 </script>
 

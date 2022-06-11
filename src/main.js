@@ -355,6 +355,22 @@ beforeRouteEnter(to,from,next){
 -We dont use it to control what the user sees on the screen since it is too late at this point 
 
 
+5.) beforeRouteLeave()
+-------------------
+
+-before guards are run before navigation action
+
+-beforeRouteLeave() guard however is used when a user is leaving
+
+-A good use case will be when a user is entering some data to a form and then wants to switch to another page/route
+
+-Very useful since we can alert the user that there are unsaved changes and if the user confirms that , then he is allowed to navigate to the next page/route;
+
+-Still works if the user clicks the back button
+
+-Implemented in UsersList component; The user must click Save changes button for him to be allowed to switch to some other change 
+
+-Very useful for providing best User's experience
 
 */
 
