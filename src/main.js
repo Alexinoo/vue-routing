@@ -286,6 +286,58 @@ Introducing Navigation Guards - Works like a Middleware
 
 -Is useful because it allows us to deny the user access to proceed further  if they are not authenticated
 
+-DIVING DEEPER INTO Navigation Guards
+=================================================================
+
+1.) beforeEach()
+----------------------------
+
+-Global beforeEach() runs on any navigation no matter which route is being used
+
+-You can also set beforeEach on single route e.g Configure on single routes
+
+2.) beforeEnter()
+-------------------
+
+-We call beforeEnter() on single route objects which is also a function that takes (to,from,next)
+
+        {  
+            path : '/users',
+            components: {                
+                default : UsersList ,
+                footer : UsersFooter            
+            },
+            beforeEnter( to , from , next ){
+                
+            }     
+        
+        },
+
+3.) beforeRouteEnter()
+-------------------
+
+-we call beforeRouteEnter() on a component which also takes in to,from and next() parameters
+
+-in this case let's call in our UsersList component
+
+beforeRouteEnter(to,from,next){
+  console.log('UsersList Cmp beforeRouteEnter');
+  console.log(to ,from);
+  next()
+},
+
+-And this method will be called anytime UsersList Component is rendered/loading
+
+3.) beforeRouteUpdate()
+-------------------
+-Called directly inside a component - inside a component which are re-used i.e TeamMembers in our case
+
+-Vue will call this method whenever this component is about to be re-used with new data because the route changed
+
+-Takes to,from and next() parameters and you can deny/confirm navigation using the next() and besides that you can utilize to by which you can call params.teamId to the navigated team object
+
+-Using beforeRouteUpdate() can be used as an alternative of using watchers though it is strictly used with routing ; i.e We use props instead of route params to make our component more flexible
+
 
 
 */
@@ -333,7 +385,13 @@ const router = createRouter({
             components: {                
                 default : UsersList ,
                 footer : UsersFooter            
-            }       
+            },
+            beforeEnter(to, from, next) {
+                console.log('Users beforeEnter');
+                console.log(to , from);
+                next();
+
+            }           
         
         },
 
