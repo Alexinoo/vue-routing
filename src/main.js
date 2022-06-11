@@ -339,6 +339,22 @@ beforeRouteEnter(to,from,next){
 -Using beforeRouteUpdate() can be used as an alternative of using watchers though it is strictly used with routing ; i.e We use props instead of route params to make our component more flexible
 
 
+4.) afterEach()
+-------------------
+
+-Takes only 2 arguments to , from
+
+-Because it runs once a navigation has been confirmed
+
+-Therefore we can't deny/confirm navigation which can only be done with before gurads
+
+-Could be useful for sending analytics data to your serve to log every navigation action 
+
+    i.e. When a user changes pages
+
+-We dont use it to control what the user sees on the screen since it is too late at this point 
+
+
 
 */
 
@@ -428,6 +444,13 @@ router.beforeEach(function (to, from, next  ){
     // }
     next()
 
+})
+
+router.afterEach(( to, from)=>{
+
+    //sending analytics data
+    console.log('Global afterEach() called..');
+    console.log(to , from);
 })
 
 const app = createApp(App)
