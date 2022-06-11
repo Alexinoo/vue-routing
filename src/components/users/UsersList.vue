@@ -36,6 +36,12 @@ methods : {
   }
 },
 
+beforeRouteEnter(to,from,next){
+  console.log('UsersList Cmp beforeRouteEnter');
+  console.log(to ,from);
+  next()
+},
+
   inject: ['users'],
 };
 </script>
