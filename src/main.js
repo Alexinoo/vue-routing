@@ -372,6 +372,30 @@ beforeRouteEnter(to,from,next){
 
 -Very useful for providing best User's experience
 
+
+-UTILIZING ROUTE METADATA
+=================================================================
+
+-On any given route in your route config , you can add an extra property called meta
+
+-Takes in any value ; String or an object and you can store any kind of values in there
+
+    e.g.  meta : { needsAuth : true },
+
+-This is useful because you can access meta property from the route it is configured using the $route object 
+
+-You can also use it inside your navigation guards since you still have access to the to prop from route objects
+
+-You can add it like this to indicate that this route needs authentication
+
+-We can use global beforeEach() and check if the route we are going to ; needs Auth
+
+-We can then check if the user is authenticated; Otherwise deny navigation
+
+-Therefore we can use it on any route and check from the data whether authentication is needed
+
+-Though it is an advanced concept , can be useful at certain use cases
+
 */
 
 
@@ -400,6 +424,7 @@ const router = createRouter({
         {  
             name : 'teams',
             path : '/teams',
+            meta : { needsAuth : true },
             components: {
 
                 default: TeamsList ,
@@ -452,6 +477,14 @@ router.beforeEach(function (to, from, next  ){
 
     console.log('Global Before Each');
     console.log( to , from );
+
+    if(to.meta.needsAuth){
+        console.log('Needs Auth!');
+        next()
+    }else{
+        next()
+    }
+
     // if( to.name === 'team-members' ){
 
     //     next();
